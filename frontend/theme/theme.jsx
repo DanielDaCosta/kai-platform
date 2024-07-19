@@ -22,7 +22,7 @@ const globalTheme = createTheme({
     700: 'rgba(69, 90, 100, 1)',
     800: 'rgba(55, 71, 79, 1)',
     900: 'rgba(38, 50, 56, 1)',
-    mode: 'dark',
+    type: 'dark',
     primary: {
       main: 'rgba(105, 73, 255, 1)',
       contrastText: 'rgba(255, 255, 255, 0.87)',

@@ -10,7 +10,7 @@ import AuthTextField from '@/components/AuthTextField';
 import GradientOutlinedButton from '@/components/GradientOutlinedButton';
 
 import { AUTH_STEPS, VALIDATION_STATES } from '@/constants/auth';
-import ALERT_COLORS from '@/constants/notification';
+import { ALERT_COLORS } from '@/constants/notification';
 
 import styles from './styles';
 

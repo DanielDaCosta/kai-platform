@@ -18,5 +18,8 @@
   },
   "devDependencies": {
     "firebase-tools": "^9.10.0"
+  },
+  "dependencies": {
+    "@mui/material": "^5.16.4"
   }
 }

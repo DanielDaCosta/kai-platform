@@ -1,4 +1,4 @@
-import { ThemeProvider } from '@mui/material/styles'; 
+import { ThemeProvider } from '@mui/material/styles';
 import { useRouter } from 'next/router';
 import { GoogleAnalytics } from 'nextjs-google-analytics';
 
@@ -13,6 +13,7 @@ const App = ({ Component, pageProps }) => {
   const getLayout = Component.getLayout || ((page) => page);
   const { query } = useRouter();
 
+  // eslint-disable-next-line no-console
   console.log('Theme object:', theme); // Add debug logging
 
   return (

@@ -97,7 +97,7 @@ const SignInForm = (props) => {
 
       // If user is verified, redirect to home
       dispatch(setLoading(true));
-      router.push(ROUTES.HOME);
+      router.push({ pathname: ROUTES.HOME, query: { from: 'login' } });
     } catch ({ code }) {
       setError({ password: { message: AUTH_ERROR_MESSAGES[code] } });
     } finally {

@@ -1,4 +1,4 @@
-import { createUserWithEmailAndPassword } from 'firebase/auth';
+import { createUserWithEmailAndPassword, updateProfile } from 'firebase/auth';
 
 import { httpsCallable } from 'firebase/functions';
 
@@ -17,6 +17,16 @@ const signUp = async (email, password, fullName) => {
       email,
       password
     );
+
+    // If the displayName field in response.user is empty, update it with the fullName provided.
+    // Any errors encountered during the update are handled by throwing the error.
+    if (!response.user.displayName) {
+      updateProfile(response.user, {
+        displayName: fullName,
+      }).catch((error) => {
+        throw error;
+      });
+    }
 
     await createUser({ email, fullName, uid: response.user.uid });
     await sendVerification(response.user);

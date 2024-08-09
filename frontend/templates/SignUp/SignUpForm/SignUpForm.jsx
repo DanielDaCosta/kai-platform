@@ -1,19 +1,16 @@
 import { useContext, useState } from 'react';
 
-import { Grid, useTheme } from '@mui/material';
+import { Grid, Typography, useTheme } from '@mui/material';
 import { FormContainer } from 'react-hook-form-mui';
 
 import useWatchFields from '@/hooks/useWatchFields';
 
 import AuthTextField from '@/components/AuthTextField';
 import GradientOutlinedButton from '@/components/GradientOutlinedButton';
-import {
-  ErrorNotification,
-  SuccessNotification,
-} from '@/components/Notifications/Notifications';
+import { ErrorNotification } from '@/components/Notifications';
 
 import { AUTH_STEPS, VALIDATION_STATES } from '@/constants/auth';
-import { ALERT_COLORS } from '@/constants/notification';
+import ALERT_COLORS from '@/constants/notification';
 
 import styles from './styles';
 
@@ -73,10 +70,8 @@ const SignUpForm = (props) => {
 
   const [error, setError] = useState(DEFAULT_ERR_STATE);
   const [loading, setLoading] = useState(false);
-
-  const [openSuccess, setOpenSuccess] = useState(false);
   const [openError, setOpenError] = useState(false);
-  const [errorMessage, setErrorMesssage] = useState('');
+  const [errorMessage, setErrorMessage] = useState('');
 
   const { handleOpenSnackBar } = useContext(AuthContext);
 
@@ -157,13 +152,33 @@ const SignUpForm = (props) => {
         setEmail(email.value);
         handleSwitch();
       } catch (err) {
-        setErrorMesssage('Signup Failed. Please try again.');
         setOpenError(true);
-        // handleOpenSnackBar(ALERT_COLORS.ERROR, err.message);
+        setErrorMessage(err.message);
       } finally {
         setLoading(false);
       }
     }
+  };
+
+  const handleCloseError = () => {
+    setOpenError(false);
+  };
+
+  const renderErrorNotification = () => {
+    const messageParts = (
+      <>
+        <Typography>Sign Up Failed.</Typography>
+        <Typography>{errorMessage}</Typography>
+      </>
+    );
+    return (
+      <ErrorNotification
+        open={openError}
+        onClose={handleCloseError}
+        message={messageParts}
+        {...styles.errorNotificationProps}
+      />
+    );
   };
 
   const renderEmailInput = () => {
@@ -261,32 +276,21 @@ const SignUpForm = (props) => {
 
   const renderSubmitButton = () => {
     return (
-      <>
-        <GradientOutlinedButton
-          bgcolor={theme.palette.Dark_Colors.Dark[1]}
-          loading={step === AUTH_STEPS.PASSWORD && loading}
-          textColor={theme.palette.Common.White['100p']}
-          clickHandler={handleSubmit}
-          text={submitButtonText()}
-          {...styles.submitButtonProps}
-        />
-        <SuccessNotification
-          message="Signup Successful. Welcome to Kai, [User Name]!"
-          open={openSuccess}
-          onClose={() => setOpenSuccess(false)}
-        />
-        <ErrorNotification
-          message={errorMessage}
-          open={openError}
-          onClose={() => setOpenError(false)}
-        />
-      </>
+      <GradientOutlinedButton
+        bgcolor={theme.palette.Dark_Colors.Dark[1]}
+        loading={step === AUTH_STEPS.PASSWORD && loading}
+        textColor={theme.palette.Common.White['100p']}
+        clickHandler={handleSubmit}
+        text={submitButtonText()}
+        {...styles.submitButtonProps}
+      />
     );
   };
 
   return (
     <FormContainer defaultValues={DEFAULT_FORM_VALUES} onSuccess={handleSubmit}>
       <Grid {...sharedStyles.formGridProps}>
+        {renderErrorNotification()}
         {renderEmailInput()}
         {renderFullNameInput()}
         {renderPasswordAndConfirmPasswordInputs()}

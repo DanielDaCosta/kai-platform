@@ -31,6 +31,21 @@ const styles = {
     fontSize: 'inherit',
     color: (theme) => theme.palette.primary.main,
   },
+  successNotificationProps: {
+    container: true,
+    item: true,
+    flexDirection: 'column',
+    alignItems: 'flex-end',
+    // anchorOrigin: { vertical: 'top', horizontal: 'right' },
+    sx: {
+      position: 'absolute',
+      top: '5%',
+      left: '65%',
+      height: '80px',
+      // transform: 'translate(-50%, -50%)',
+      width: '324px', // Adjust the max-width as needed
+    },
+  },
 };
 
 export default styles;

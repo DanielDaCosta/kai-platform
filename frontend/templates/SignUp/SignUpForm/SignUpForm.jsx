@@ -152,7 +152,9 @@ const SignUpForm = (props) => {
         setEmail(email.value);
         handleSwitch();
       } catch (err) {
+        // Set the state to display the error notification
         setOpenError(true);
+        // Update the error message state with the message from the caught error
         setErrorMessage(err.message);
       } finally {
         setLoading(false);
@@ -160,22 +162,26 @@ const SignUpForm = (props) => {
     }
   };
 
+  // Handler to close the error notification
   const handleCloseError = () => {
-    setOpenError(false);
+    setOpenError(false); // Set the state to hide the error notification
   };
 
+  // Function to render the error notification component
   const renderErrorNotification = () => {
+    // Define the content of the error notification message
     const messageParts = (
       <>
         <Typography>Sign Up Failed.</Typography>
         <Typography>{errorMessage}</Typography>
       </>
     );
+    // Return the ErrorNotification component with the configured properties
     return (
       <ErrorNotification
-        open={openError}
-        onClose={handleCloseError}
-        message={messageParts}
+        open={openError} // Control the visibility of the error notification
+        onClose={handleCloseError} // Specify the function to call when the notification is closed
+        message={messageParts} // Set the content of the error message
         {...styles.errorNotificationProps}
       />
     );

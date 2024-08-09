@@ -18,8 +18,8 @@ const signUp = async (email, password, fullName) => {
       password
     );
 
-    // If the displayName field in response.user is empty, update it with the fullName provided.
-    // Any errors encountered during the update are handled by throwing the error.
+    // Check if the displayName field is empty; if so, update it with the provided fullName.
+    // Any errors during the update process will be thrown for handling.
     if (!response.user.displayName) {
       updateProfile(response.user, {
         displayName: fullName,

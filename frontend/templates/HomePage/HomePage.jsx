@@ -14,10 +14,11 @@ import { auth } from '@/redux/store';
 
 const HomePage = (props) => {
   const { data, loading } = props;
-  const [notificationOpen, setNotificationOpen] = useState(false);
+  const [openSuccessNotification, setOpenSuccessNotification] = useState(false);
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, async (user) => {
+      // Check if the user object exists, indicating a user is signed in.
       if (user) {
         // Convert the timestamp of the last user information refresh to a formatted date string.
         const refreshDate = moment(user.reloadUserInfo.lastRefreshAt).format(
@@ -34,7 +35,7 @@ const HomePage = (props) => {
         // Check if the creation date, last sign-in date, and last refresh date are the same.
         // This indicates that the user is signing in for the first time and should see the sign-up notification.
         if (refreshDate === creationDate && creationDate === lastSignInDate) {
-          setNotificationOpen(true); // Open the sign-up notification if conditions are met.
+          setOpenSuccessNotification(true); // Open the sign-up notification if conditions are met.
         }
       }
     });
@@ -43,8 +44,9 @@ const HomePage = (props) => {
     };
   }, []);
 
+  // Handler to close the success notification
   const handleClose = () => {
-    setNotificationOpen(false);
+    setOpenSuccessNotification(false); // Set the state to hide the success notification
   };
 
   // Function to render a sign-up success notification
@@ -79,9 +81,9 @@ const HomePage = (props) => {
     // Return the SuccessNotification component with the configured props
     return (
       <SuccessNotification
-        open={notificationOpen}
-        message={messagePart}
-        onClose={handleClose}
+        open={openSuccessNotification} // Control the visibility of the success notification
+        onClose={handleClose} // Specify the function to call when the notification is closed
+        message={messagePart} // Set the content of the error message
         {...styles.successNotificationProps}
       />
     );

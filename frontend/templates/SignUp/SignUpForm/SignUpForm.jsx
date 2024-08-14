@@ -1,13 +1,13 @@
 import { useContext, useState } from 'react';
 
-import { Grid, useTheme } from '@mui/material';
+import { Grid, Typography, useTheme } from '@mui/material';
 import { FormContainer } from 'react-hook-form-mui';
 
 import useWatchFields from '@/hooks/useWatchFields';
 
 import AuthTextField from '@/components/AuthTextField';
-
 import GradientOutlinedButton from '@/components/GradientOutlinedButton';
+import { ErrorNotification } from '@/components/Notifications';
 
 import { AUTH_STEPS, VALIDATION_STATES } from '@/constants/auth';
 import ALERT_COLORS from '@/constants/notification';
@@ -70,6 +70,8 @@ const SignUpForm = (props) => {
 
   const [error, setError] = useState(DEFAULT_ERR_STATE);
   const [loading, setLoading] = useState(false);
+  const [openError, setOpenError] = useState(false);
+  const [errorMessage, setErrorMessage] = useState('');
 
   const { handleOpenSnackBar } = useContext(AuthContext);
 
@@ -150,11 +152,39 @@ const SignUpForm = (props) => {
         setEmail(email.value);
         handleSwitch();
       } catch (err) {
-        handleOpenSnackBar(ALERT_COLORS.ERROR, err.message);
+        // Set the state to display the error notification
+        setOpenError(true);
+        // Update the error message state with the message from the caught error
+        setErrorMessage(err.message);
       } finally {
         setLoading(false);
       }
     }
+  };
+
+  // Handler to close the error notification
+  const handleCloseError = () => {
+    setOpenError(false); // Set the state to hide the error notification
+  };
+
+  // Function to render the error notification component
+  const renderErrorNotification = () => {
+    // Define the content of the error notification message
+    const messageParts = (
+      <>
+        <Typography>Sign Up Failed.</Typography>
+        <Typography>{errorMessage}</Typography>
+      </>
+    );
+    // Return the ErrorNotification component with the configured properties
+    return (
+      <ErrorNotification
+        open={openError} // Control the visibility of the error notification
+        onClose={handleCloseError} // Specify the function to call when the notification is closed
+        message={messageParts} // Set the content of the error message
+        {...styles.errorNotificationProps}
+      />
+    );
   };
 
   const renderEmailInput = () => {
@@ -266,6 +296,7 @@ const SignUpForm = (props) => {
   return (
     <FormContainer defaultValues={DEFAULT_FORM_VALUES} onSuccess={handleSubmit}>
       <Grid {...sharedStyles.formGridProps}>
+        {renderErrorNotification()}
         {renderEmailInput()}
         {renderFullNameInput()}
         {renderPasswordAndConfirmPasswordInputs()}

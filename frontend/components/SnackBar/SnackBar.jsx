@@ -1,6 +1,6 @@
 import { Alert, Snackbar } from '@mui/material';
 
-import ALERT_COLORS from '@/constants/notification';
+import { ALERT_COLORS } from '@/constants/notification';
 
 /**
  * Renders a Snackbar component with alert messages.
